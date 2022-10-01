@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Masai Country Finder</title>
+  </head>
+  <body>
+    <div id="sort_filter">
+      <label for="sort">Sort Based On Population</label>
+            <!-- note: don't add onchange event here -->
+      <select name="sort" id="sort_population" >
+        <option value ="">--sort by population--</option>
+        <option value="asc">Low To High</option>
+        <option value="desc">High To Low</option>
+      </select>
+
+      <label for="filter">Filter for Region</label>
+      <!-- note: don't add onchange event here -->
+      <select name="filter" id="filter_region" >
+        <option value="all">All</option>
+        <option value="Africa">Africa</option>
+        <option value="America">America</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Oceania">Oceania</option>
+      </select>
+    </div>
+    <div id="all_countries"></div>
+  </body>
+</html>
+<script src="./src/index.js"></script>
+
+
+<script>
+
+let fecthCountriess = async () => {
+  // make an API
+  let res =await fetch("https://restcountries.com/v3.1/all");
+   res = await res.json();
+  countryCards(res);
+  
+};
+fecthCountriess();
+
+
+let cardDiv = document.getElementById("all_countries");
+ 
+  let countryCards = (el) => {
+    
+    console.log(el.length);
+  cardDiv.innerHTML="";
+
+
+  el.forEach((ele) => {
+    console.log(ele);
+   let div=document.createElement("div");
+
+    let Image = document.createElement("img");
+    Image.src = ele.flags["png"];
+    console.log(ele.flags["png"]);
+
+    let Population = document.createElement("h1");
+    Population.textContent = ele.population;
+    console.log(ele.population,"pop");
+
+    let  Region = document.createElement("h2");
+    Region.textContent = ele.name["common"];
+    console.log(ele.name["common"]);
+    let cap=ele.capital[0];
+    let Capital = document.createElement("h1");
+    Capital.innerText = cap;
+    console.log(cap,"CAP");
+  
+    div.append(Image,Region,Population,Capital);
+    cardDiv.append(div);
+  });
+}
+
+
+
+</script>
